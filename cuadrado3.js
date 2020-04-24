@@ -135,8 +135,7 @@ if(!gl.getProgramParameter(program, gl.LINK_STATUS)){
             1, 1, 0
         ];
       
-        const positionBuffer = gl.createBuffer();
-        const colorBuffer = gl.createBuffer();
+        
         
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(triangleCoords), gl.STATIC_DRAW);
