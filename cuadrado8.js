@@ -1,5 +1,6 @@
 const canvas = document.getElementById('glcanvas');
 const gl = canvas.getContext('webgl2');
+const time= 0.01;
 
 // clear screen
 
@@ -60,20 +61,38 @@ if(!gl.getProgramParameter(program, gl.LINK_STATUS)){
 gl.useProgram(program);
 
 
-    const triangleCoords = [
-        -0.5, -0.5, 
-        0.5, -0.5, 
-        -0.5, 0.5, 
-        0.5, 0.5
-    ];
+
+
     
-    const vertexColor = [
-        1, 0, 0, 
-        0, 1, 0, 
-        0, 0, 1,
-        1, 1, 0
-    ];
     
+    
+
+  
+
+
+
+
+
+     gl.clear(gl.COLOR_BUFFER_BIT);
+        const triangleCoords = [
+            -0.5, -0.5, 
+            0.5, -0.5, 
+            -0.5, 0.5, 
+            0.5, 0.5
+        ];
+
+        const vertexColor = [
+
+        
+            
+                0,0,1,
+                0,1,0,
+                1,1,1,
+                1,0,0
+                
+           
+      ]; 
+         
     const positionBuffer = gl.createBuffer();
     const colorBuffer = gl.createBuffer();
     
@@ -90,3 +109,48 @@ gl.useProgram(program);
     gl.vertexAttribPointer(color, 3, gl.FLOAT, gl.FALSE, 0, 0);
     
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+   
+
+    var then = 0;
+
+  // Draw the scene repeatedly
+  function render(now) {
+    now *= 0.001;  // convert to seconds
+    const deltaTime = now - then;
+    then = now;
+    
+    const vertexColor = [
+
+        
+            
+        0,0,1,
+        0,1,0,
+        1,1,1,
+        0,0,1
+         
+]; 
+
+const colorBuffer = gl.createBuffer();
+    
+gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(triangleCoords), gl.STATIC_DRAW);
+const position = gl.getAttribLocation(program, 'position');
+gl.enableVertexAttribArray(position);
+gl.vertexAttribPointer(position, 2, gl.FLOAT, gl.FALSE, 0, 0);
+
+gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexColor), gl.STATIC_DRAW);
+const color = gl.getAttribLocation(program, 'color');
+gl.enableVertexAttribArray(color);
+gl.vertexAttribPointer(color, 3, gl.FLOAT, gl.FALSE, 0, 0);
+
+gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+drawScene(vertexColor,deltaTime);   
+
+    
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
